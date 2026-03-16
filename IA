@@ -1,0 +1,39 @@
+#Título 
+#Input
+#a cada mensagem
+    #mostrar a mensagem que foi enviada
+    #pegar a pergunta e enviar para a ia e mostrar na tela
+
+#StreamLIT -> criar front e back end
+
+import streamlit as st
+from openai import OpenAI
+
+modelo_ia = OpenAI(api_key="#")
+
+st.write("# YurIA")
+
+if not "lista_mensagem" in st.session_state:
+    st.session_state["lista_mensagem"] = []
+
+texto_usuario = st.chat_input("Insira sua mensagem")  
+
+for mensagem in st.session_state["lista_mensagem"]:
+    role = mensagem["role"]
+    content = mensagem["content"]
+    st.chat_message(role).write(content)
+
+if texto_usuario:
+    st.chat_message("user").write(texto_usuario)
+    mensagem_usuario = {"role": "user", "content": texto_usuario}
+    st.session_state["lista_mensagem"].append(mensagem_usuario)
+
+    resposta_ia = modelo_ia.chat.completions.create(
+        messages= st.session_state["lista_mensagem"],
+        model="gpt-4o"
+    )
+    texto_resposta_ia = resposta_ia.choices[0].message.content
+    st.chat_message("assistant").write(texto_resposta_ia)
+    mensagem_ia = {"role": "assistant", "content": texto_resposta_ia}
+    st.session_state["lista_mensagem"].append(mensagem_ia)
+    
