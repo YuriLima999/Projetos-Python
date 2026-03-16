@@ -1,0 +1,62 @@
+# Projeto Python IA: Inteligência Artificial e Previsões
+
+### Case: Score de Crédito dos Clientes
+
+Você foi contratado por um banco para conseguir definir o score de crédito dos clientes. Você precisa analisar todos os clientes do banco e, com base nessa análise, criar um modelo que consiga ler as informações do cliente e dizer automaticamente o score de crédito dele: Ruim, Ok, Bom
+
+import pandas as pd
+import sklearn as sk
+tabela = pd.read_csv("clientes.csv")
+display(tabela.info())
+display(tabela.columns)
+
+from sklearn.preprocessing import LabelEncoder
+codificador_profissao = LabelEncoder()
+tabela["profissao"] = codificador_profissao.fit_transform(tabela["profissao"])
+
+codificador_mix = LabelEncoder()
+tabela["mix_credito"] = codificador_profissao.fit_transform(tabela["mix_credito"])
+
+codificador_comportamento = LabelEncoder()
+tabela["comportamento_pagamento"] = codificador_profissao.fit_transform(tabela["comportamento_pagamento"])
+
+display(tabela.info())
+
+x = tabela.drop(["score_credito", "id_cliente"], axis= 1)
+y = tabela["score_credito"]
+
+from sklearn.model_selection import train_test_split
+
+x_treino, x_teste, y_treino, y_teste = train_test_split(x, y, test_size=0.3, random_state=1)
+
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+
+Random = RandomForestClassifier()
+Knn = KNeighborsClassifier()
+
+Random.fit(x_treino, y_treino)
+Knn.fit(x_treino, y_treino)
+
+from sklearn.metrics import accuracy_score
+
+previsao_random = Random.predict(x_teste)
+previsao_knn = Knn.predict(x_teste)
+
+print(accuracy_score(y_teste, previsao_random))
+print(accuracy_score(y_teste, previsao_knn))
+
+novos_clientes = pd.read_csv("novos_clientes.csv")
+
+novos_clientes["profissao"] = codificador_profissao.fit_transform(novos_clientes["profissao"])
+
+novos_clientes["mix_credito"] = codificador_profissao.fit_transform(novos_clientes["mix_credito"])
+
+novos_clientes["comportamento_pagamento"] = codificador_profissao.fit_transform(novos_clientes["comportamento_pagamento"])
+
+previsao = Random.predict(novos_clientes)
+
+display(novos_clientes)
+novos_clientes["previsao"] = previsao
+display(previsao)
+display (novos_clientes)
