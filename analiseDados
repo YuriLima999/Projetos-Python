@@ -1,0 +1,42 @@
+# Python Insights - Analisando Dados com Python
+
+### Case - Cancelamento de Clientes
+
+Você foi contratado por uma empresa com mais de 800 mil clientes para um projeto de Dados. Recentemente a empresa percebeu que da sua base total de clientes, a maioria são clientes inativos, ou seja, que já cancelaram o serviço.
+
+Precisando melhorar seus resultados ela quer conseguir entender os principais motivos desses cancelamentos e quais as ações mais eficientes para reduzir esse número.
+
+Base de dados e arquivos: https://drive.google.com/drive/folders/1uDesZePdkhiraJmiyeZ-w5tfc8XsNYFZ?usp=drive_link
+
+#Passo a passo 
+#Passo 1: Abrir a base de dados 
+import pandas as pd
+
+tabela = pd.read_csv("cancelamentos.csv")
+
+#Passo 2: Analisar/visualisar a base de dados
+tabela = tabela.drop(columns="CustomerID")
+
+display(tabela)
+
+#passo 3: Tratar os erros da base de dados 
+display(tabela.info())
+
+tabela = tabela.dropna()
+
+display(tabela.info())
+
+#Passo 4: Análise inicial da base de dados
+#quantidade - contar quantas pessoas cancelaram (0 e 1)
+
+display(tabela["cancelou"].value_counts())
+
+#porcentagem
+
+display(tabela["cancelou"].value_counts(normalize=True)) #normalize = porcentagem
+
+#Passo 5: Análise detalhada (causa do cancelamento)
+import plotly.express as px
+for coluna in tabela.columns:
+    grafico = px.histogram(tabela, x=coluna, color="cancelou", text_auto= True)
+    grafico.show()
