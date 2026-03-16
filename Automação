@@ -1,0 +1,75 @@
+# Passo a passo do projeto
+# Passo 1: Entrar no sistema da empresa 
+    # https://dlp.hashtagtreinamentos.com/python/intensivao/login
+
+import pyautogui
+import time
+
+# pyautogui.write -> escrever um texto
+# pyautogui.press -> apertar 1 tecla
+# pyautogui.click -> clicar em algum lugar da tela
+# pyautogui.hotkey -> combinação de teclas
+pyautogui.PAUSE = 1
+
+# abrir o navegador (chrome)
+pyautogui.press("win")
+pyautogui.write("chrome")
+pyautogui.press("enter")
+
+# entrar no link 
+pyautogui.write("https://dlp.hashtagtreinamentos.com/python/intensivao/login")
+pyautogui.press("enter")
+time.sleep(8)
+
+
+# Passo 2: Fazer login
+# selecionar o campo de email
+pyautogui.click(x=698, y=374)
+# escrever o seu email
+pyautogui.write("pythonimpressionador@gmail.com")
+pyautogui.press("tab") # passando pro próximo campo
+pyautogui.write("sua senha")
+pyautogui.click(x=825, y=534) # clique no botao de login
+time.sleep(5)
+#passo 3: abrir a base de dados
+
+import pandas 
+
+tabela = pandas.read_csv("produtos.csv")
+
+for linha in tabela.index:
+
+    pyautogui.click(x=788, y=259)
+
+    codigo = str(tabela.loc[linha, "codigo"])
+    pyautogui.write(codigo)
+    pyautogui.press("tab")
+
+    marca = str(tabela.loc[linha, "marca"])
+    pyautogui.write(marca)
+    pyautogui.press("tab")
+
+    tipo = str(tabela.loc[linha, "tipo"])
+    pyautogui.write(tipo)
+    pyautogui.press("tab")
+
+    categoria = str(tabela.loc[linha, "categoria"])
+    pyautogui.write(categoria)
+    pyautogui.press("tab")
+
+    preco = str(tabela.loc[linha, "preco_unitario"])
+    pyautogui.write(preco)
+    pyautogui.press("tab")
+
+    custo = str(tabela.loc[linha, "custo"])
+    pyautogui.write(custo)
+    pyautogui.press("tab")
+
+    obs = str(tabela.loc[linha, "obs"])
+    if obs != "nan":
+        pyautogui.write(obs)
+    pyautogui.write(obs)
+    pyautogui.press("tab")
+    pyautogui.press("enter")
+    pyautogui.scroll(5000)
+
